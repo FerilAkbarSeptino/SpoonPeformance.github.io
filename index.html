@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spoon Performance - JDM Parts & Engineering</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Roboto+Condensed:wght@700&display=swap');
+
+        :root {
+            --spoon-blue: #00529B;
+            --spoon-yellow: #FFD700;
+            --racing-white: #F8F9FA;
+            --carbon-grey: #212529;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--racing-white);
+            color: var(--carbon-grey);
+        }
+
+        .jdm-font {
+            font-family: 'Roboto Condensed', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .bg-spoon-blue { background-color: var(--spoon-blue); }
+        .text-spoon-blue { color: var(--spoon-blue); }
+        .bg-spoon-yellow { background-color: var(--spoon-yellow); }
+        .border-spoon-blue { border-color: var(--spoon-blue); }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .hero-gradient {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://motofutura.com/wp-content/uploads/2024/09/mf_spoon_sports_9.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: var(--spoon-blue); }
+        
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;  
+            overflow: hidden;
+        }
+
+        /* Payment Option Styling */
+        .payment-option input:checked + div {
+            border-color: var(--spoon-blue);
+            background-color: #f0f7ff;
+            box-shadow: 0 0 0 2px var(--spoon-blue);
+        }
+
+        .auth-tab.active {
+            border-bottom: 4px solid var(--spoon-blue);
+            color: var(--spoon-blue);
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- Navigasi -->
+    <nav class="bg-white border-b-4 border-spoon-blue sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="showPage('home')">
+                        <span class="text-2xl md:text-3xl jdm-font italic font-black text-spoon-blue">SPOON</span>
+                        <span class="ml-1 md:ml-2 px-1.5 py-0.5 bg-spoon-yellow text-spoon-blue font-bold text-[10px] md:text-xs rounded">SPORTS</span>
+                    </div>
+                    <div class="hidden md:ml-10 md:flex space-x-8">
+                        <a href="#" onclick="showPage('home')" class="text-carbon-grey hover:text-spoon-blue font-bold text-sm uppercase tracking-widest transition">Beranda</a>
+                        <a href="#" onclick="showPage('catalog')" class="text-carbon-grey hover:text-spoon-blue font-bold text-sm uppercase tracking-widest transition">Katalog</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="p-2 text-carbon-grey hover:text-spoon-blue relative transition" onclick="showPage('cart')">
+                        <i class="fa-solid fa-cart-shopping text-xl"></i>
+                        <span id="cart-count" class="absolute top-0 right-0 bg-spoon-yellow text-spoon-blue text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center border-2 border-white">0</span>
+                    </button>
+                    
+                    <div id="auth-nav-section">
+                        <button class="bg-spoon-blue text-white px-4 md:px-6 py-2 rounded-sm font-bold text-[10px] md:text-xs uppercase hover:bg-opacity-90 transition" onclick="showPage('login')">Masuk</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Kontainer Konten Utama -->
+    <main id="main-content">
+
+        <!-- Halaman Beranda -->
+        <section id="page-home" class="page-content">
+            <div class="hero-gradient h-[60vh] md:h-[70vh] flex items-center justify-center text-center px-4">
+                <div>
+                    <h1 class="text-white text-4xl md:text-7xl font-black jdm-font mb-4 tracking-tighter">TOTAL TECHNOLOGY</h1>
+                    <p class="text-spoon-yellow text-lg md:text-2xl font-bold uppercase mb-8">Engineering for the pure racing spirit.</p>
+                    <button onclick="showPage('catalog')" class="bg-spoon-yellow text-spoon-blue px-8 md:px-10 py-3 md:py-4 font-black uppercase text-sm md:text-lg hover:scale-105 transition-transform shadow-xl">Lihat Produk</button>
+                </div>
+            </div>
+
+            <!-- Kategori -->
+            <div class="max-w-7xl mx-auto py-12 md:py-16 px-4">
+                <h2 class="text-2xl md:text-3xl font-black jdm-font mb-8 border-l-8 border-spoon-blue pl-4 italic">Kategori Populer</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                    <div onclick="filterByCategory('Wheels')" class="bg-white p-6 md:p-8 text-center border-b-4 border-transparent hover:border-spoon-blue cursor-pointer transition shadow-sm group">
+                        <i class="fa-solid fa-circle-notch text-3xl md:text-4xl mb-3 md:mb-4 text-spoon-blue group-hover:scale-110 transition-transform"></i>
+                        <h3 class="font-bold uppercase text-[10px] md:text-sm tracking-tighter md:tracking-normal">Velg (Wheels)</h3>
+                    </div>
+                    <div onclick="filterByCategory('Engine')" class="bg-white p-6 md:p-8 text-center border-b-4 border-transparent hover:border-spoon-blue cursor-pointer transition shadow-sm group">
+                        <i class="fa-solid fa-gauge-high text-3xl md:text-4xl mb-3 md:mb-4 text-spoon-blue group-hover:scale-110 transition-transform"></i>
+                        <h3 class="font-bold uppercase text-[10px] md:text-sm tracking-tighter md:tracking-normal">Mesin (Engine)</h3>
+                    </div>
+                    <div onclick="filterByCategory('Brakes')" class="bg-white p-6 md:p-8 text-center border-b-4 border-transparent hover:border-spoon-blue cursor-pointer transition shadow-sm group">
+                        <i class="fa-solid fa-life-ring text-3xl md:text-4xl mb-3 md:mb-4 text-spoon-blue group-hover:scale-110 transition-transform"></i>
+                        <h3 class="font-bold uppercase text-[10px] md:text-sm tracking-tighter md:tracking-normal">Rem (Brakes)</h3>
+                    </div>
+                    <div onclick="filterByCategory('Accessories')" class="bg-white p-6 md:p-8 text-center border-b-4 border-transparent hover:border-spoon-blue cursor-pointer transition shadow-sm group">
+                        <i class="fa-solid fa-screwdriver-wrench text-3xl md:text-4xl mb-3 md:mb-4 text-spoon-blue group-hover:scale-110 transition-transform"></i>
+                        <h3 class="font-bold uppercase text-[10px] md:text-sm tracking-tighter md:tracking-normal">Aksesoris</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Halaman Katalog -->
+        <section id="page-catalog" class="page-content hidden py-8 md:py-12">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex flex-col md:flex-row gap-6 md:gap-8">
+                    <aside class="w-full md:w-64 space-y-6">
+                        <div>
+                            <h3 class="font-black uppercase mb-4 text-spoon-blue underline decoration-yellow-400 decoration-4 italic">Filter Part</h3>
+                            <div class="space-y-4">
+                                <label class="block text-[10px] font-black uppercase text-gray-500 mb-1">Kategori Produk</label>
+                                <select id="catalog-category-filter" onchange="filterByCategory(this.value)" class="w-full p-3 border border-gray-300 rounded-none bg-white text-sm outline-none focus:border-spoon-blue transition">
+                                    <option value="All">Semua Produk</option>
+                                    <option value="Wheels">Velg (Wheels)</option>
+                                    <option value="Engine">Mesin (Engine)</option>
+                                    <option value="Brakes">Rem (Brakes)</option>
+                                    <option value="Exhaust">Knalpot (Exhaust)</option>
+                                    <option value="Body">Body Part</option>
+                                    <option value="Accessories">Aksesoris (Accessories)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </aside>
+                    <div class="flex-1">
+                        <div class="mb-6 flex justify-between items-center">
+                            <h2 id="catalog-title" class="text-xl md:text-2xl font-black jdm-font italic">Semua Produk</h2>
+                            <p id="product-count" class="text-[10px] font-bold text-gray-400 uppercase tracking-widest"></p>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8" id="product-list"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Halaman Detail Produk -->
+        <section id="page-detail" class="page-content hidden py-8 md:py-12">
+            <div class="max-w-7xl mx-auto px-4" id="detail-content"></div>
+        </section>
+
+        <!-- Halaman Keranjang -->
+        <section id="page-cart" class="page-content hidden py-8 md:py-12">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex flex-col lg:flex-row gap-10">
+                    <div class="flex-1 space-y-8">
+                        <div>
+                            <h2 class="text-2xl md:text-3xl font-black jdm-font mb-6 italic text-spoon-blue">Keranjang Belanja</h2>
+                            <div id="cart-items" class="bg-white shadow-md p-4 md:p-6 space-y-6 border-l-8 border-spoon-blue"></div>
+                        </div>
+                        
+                        <!-- Form Pengiriman -->
+                        <div class="bg-white shadow-md p-6 md:p-8 border-l-8 border-spoon-yellow">
+                            <h3 class="font-black text-lg md:text-xl mb-6 uppercase italic tracking-tighter">1. Detail Pengiriman</h3>
+                            <form id="shipping-form" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="col-span-1">
+                                    <label class="block text-[10px] font-black uppercase text-gray-500 mb-1">Nama Lengkap *</label>
+                                    <input type="text" id="cust-name" required class="w-full p-3 border border-gray-200 outline-none focus:border-spoon-blue text-sm transition" placeholder="Masukkan nama">
+                                </div>
+                                <div class="col-span-1">
+                                    <label class="block text-[10px] font-black uppercase text-gray-500 mb-1">Nomor Telepon *</label>
+                                    <input type="tel" id="cust-phone" required class="w-full p-3 border border-gray-200 outline-none focus:border-spoon-blue text-sm transition" placeholder="08xx...">
+                                </div>
+                                <div class="col-span-full">
+                                    <label class="block text-[10px] font-black uppercase text-gray-500 mb-1">Alamat Lengkap *</label>
+                                    <textarea id="cust-address" required rows="3" class="w-full p-3 border border-gray-200 outline-none focus:border-spoon-blue text-sm transition" placeholder="Alamat pengiriman part..."></textarea>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Metode Pembayaran -->
+                        <div class="bg-white shadow-md p-6 md:p-8 border-l-8 border-gray-800">
+                            <h3 class="font-black text-lg md:text-xl mb-6 uppercase italic tracking-tighter">2. Metode Pembayaran</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="payment-methods">
+                                <!-- Bank Transfer -->
+                                <label class="payment-option cursor-pointer relative">
+                                    <input type="radio" name="payment" value="Bank Transfer" class="hidden" checked>
+                                    <div class="border-2 border-gray-100 p-4 flex items-center gap-4 transition-all">
+                                        <div class="w-10 h-10 bg-gray-100 rounded flex items-center justify-center text-spoon-blue">
+                                            <i class="fa-solid fa-building-columns text-xl"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-black text-[10px] uppercase">Transfer Bank</p>
+                                            <p class="text-[9px] text-gray-500 italic">BCA, Mandiri, BNI</p>
+                                        </div>
+                                    </div>
+                                </label>
+                                <!-- E-Wallet -->
+                                <label class="payment-option cursor-pointer relative">
+                                    <input type="radio" name="payment" value="E-Wallet" class="hidden">
+                                    <div class="border-2 border-gray-100 p-4 flex items-center gap-4 transition-all">
+                                        <div class="w-10 h-10 bg-gray-100 rounded flex items-center justify-center text-spoon-blue">
+                                            <i class="fa-solid fa-wallet text-xl"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-black text-[10px] uppercase">E-Wallet</p>
+                                            <p class="text-[9px] text-gray-500 italic">QRIS, OVO, Dana</p>
+                                        </div>
+                                    </div>
+                                </label>
+                                <!-- PayPal -->
+                                <label class="payment-option cursor-pointer relative">
+                                    <input type="radio" name="payment" value="PayPal" class="hidden">
+                                    <div class="border-2 border-gray-100 p-4 flex items-center gap-4 transition-all">
+                                        <div class="w-10 h-10 bg-gray-100 rounded flex items-center justify-center text-spoon-blue">
+                                            <i class="fa-brands fa-paypal text-xl"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-black text-[10px] uppercase">PayPal</p>
+                                            <p class="text-[9px] text-gray-500 italic">International Payment</p>
+                                        </div>
+                                    </div>
+                                </label>
+                                <!-- COD -->
+                                <label class="payment-option cursor-pointer relative">
+                                    <input type="radio" name="payment" value="COD" class="hidden">
+                                    <div class="border-2 border-gray-100 p-4 flex items-center gap-4 transition-all">
+                                        <div class="w-10 h-10 bg-gray-100 rounded flex items-center justify-center text-spoon-blue">
+                                            <i class="fa-solid fa-truck-fast text-xl"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-black text-[10px] uppercase">COD</p>
+                                            <p class="text-[9px] text-gray-500 italic">Bayar di Tempat</p>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ringkasan Pesanan -->
+                    <div class="w-full lg:w-96">
+                        <div class="bg-white shadow-md p-6 border-t-8 border-spoon-blue lg:sticky lg:top-24">
+                            <h3 class="font-black text-xl mb-6 uppercase italic tracking-tighter">Ringkasan</h3>
+                            <div class="space-y-4 text-xs font-bold uppercase">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">Subtotal Part</span>
+                                    <span id="summary-subtotal">Rp 0</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">Estimasi Ongkir</span>
+                                    <span>Rp 150.000</span>
+                                </div>
+                                <div class="flex justify-between font-black text-lg pt-4 border-t-4 border-double border-gray-100">
+                                    <span>TOTAL AKHIR</span>
+                                    <span id="cart-total" class="text-spoon-blue">Rp 0</span>
+                                </div>
+                            </div>
+                            <button class="w-full bg-spoon-blue text-white py-4 mt-8 font-black uppercase text-sm hover:bg-black transition-all shadow-lg" onclick="startVerification()">
+                                Konfirmasi Pembelian <i class="fa-solid fa-chevron-right ml-2"></i>
+                            </button>
+                            <p class="text-[9px] text-center text-gray-400 mt-4 uppercase font-bold tracking-widest italic">Spoon Sports Japan Engineering</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Halaman Auth (Login/Daftar) -->
+        <section id="page-login" class="page-content hidden py-16 bg-gray-100 flex items-center justify-center px-4">
+            <div class="max-w-md w-full bg-white shadow-2xl border-t-8 border-spoon-blue">
+                <div class="flex border-b">
+                    <button onclick="toggleAuthTab('login')" id="tab-login" class="auth-tab active flex-1 py-4 font-black uppercase text-xs italic tracking-widest transition">Masuk</button>
+                    <button onclick="toggleAuthTab('register')" id="tab-register" class="auth-tab flex-1 py-4 font-black uppercase text-xs italic tracking-widest text-gray-400 transition">Daftar</button>
+                </div>
+                <div class="p-8 md:p-10">
+                    <div id="form-login" class="space-y-5">
+                        <h2 class="text-xl font-black jdm-font mb-6 italic text-spoon-blue">AKUN DRIVER</h2>
+                        <input type="email" id="login-email" class="w-full p-3 border border-gray-200 outline-none focus:border-spoon-blue text-sm transition" placeholder="Email">
+                        <input type="password" id="login-password" class="w-full p-3 border border-gray-200 outline-none focus:border-spoon-blue text-sm transition" placeholder="Password">
+                        <button class="w-full bg-spoon-blue text-white py-4 font-black uppercase text-sm hover:bg-black transition" onclick="handleAuthAction('login')">Masuk</button>
+                    </div>
+                    <div id="form-register" class="space-y-5 hidden">
+                        <h2 class="text-xl font-black jdm-font mb-6 italic text-spoon-blue">PENDAFTARAN</h2>
+                        <input type="text" id="reg-name" class="w-full p-3 border border-gray-200 outline-none focus:border-spoon-blue text-sm transition" placeholder="Nama Lengkap">
+                        <input type="email" id="reg-email" class="w-full p-3 border border-gray-200 outline-none focus:border-spoon-blue text-sm transition" placeholder="Email">
+                        <input type="password" id="reg-password" class="w-full p-3 border border-gray-200 outline-none focus:border-spoon-blue text-sm transition" placeholder="Password">
+                        <button class="w-full bg-spoon-blue text-white py-4 font-black uppercase text-sm hover:bg-black transition" onclick="handleAuthAction('register')">Daftar</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Halaman Privasi -->
+        <section id="page-privacy" class="page-content hidden py-12 bg-white min-h-[60vh]">
+            <div class="max-w-4xl mx-auto px-4">
+                <h2 class="text-3xl font-black jdm-font mb-8 italic border-b-4 border-spoon-blue pb-4">Kebijakan Privasi</h2>
+                <div class="prose prose-sm max-w-none text-gray-700 space-y-6">
+                    <p class="font-bold italic text-xs">Terakhir diperbarui: 12 Januari 2026</p>
+                    <p>Kami menjaga data Anda sesuai standar balap internasional.</p>
+                </div>
+                <button onclick="showPage('home')" class="mt-12 bg-spoon-blue text-white px-8 py-4 font-black uppercase text-xs hover:bg-black transition">Kembali</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-spoon-yellow text-black py-12 md:py-16 mt-20">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div>
+                <span class="text-3xl jdm-font italic font-black text-black">SPOON</span>
+                <span class="ml-2 px-2 py-1 bg-spoon-blue text-white font-bold text-[10px] rounded uppercase">Sports</span>
+                <p class="mt-4 text-black/70 text-sm font-medium">Engineering for the pure racing spirit. Sejak 1988.</p>
+            </div>
+            <div>
+                <h4 class="font-black uppercase mb-4 text-black border-b-2 border-black inline-block">Bantuan</h4>
+                <ul class="space-y-2 text-sm text-black/80 font-bold">
+                    <li><button onclick="showPage('privacy')" class="hover:text-spoon-blue transition">Kebijakan Privasi</button></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-black uppercase mb-4 text-black border-b-2 border-black inline-block">Kontak</h4>
+                <div class="flex items-center gap-6 text-black">
+                    <!-- WhatsApp Link Updated -->
+                    <a href="https://wa.me/message/7NPYBTFNN6HEI1" target="_blank" title="Kontak via WhatsApp" class="hover:text-spoon-blue transition-all transform hover:scale-125">
+                        <i class="fa-brands fa-whatsapp text-2xl"></i>
+                    </a>
+                    <a href="https://www.instagram.com/notfasy?igsh=Z2o2amlkejJ3ZzFn&utm_source=qr" target="_blank" title="Instagram Profile" class="hover:text-spoon-blue transition-all transform hover:scale-125">
+                        <i class="fa-brands fa-instagram text-2xl"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-black/10 text-center">
+            <p class="text-[9px] font-black uppercase tracking-widest text-black/50">© 2026 Spoon Performance Engineering Japan.</p>
+        </div>
+    </footer>
+
+    <!-- Notifikasi -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-spoon-blue text-white px-6 py-3 rounded-none shadow-2xl transform translate-y-20 opacity-0 transition-all duration-500 z-[100] text-[10px] font-black uppercase tracking-widest">
+        Part masuk keranjang!
+    </div>
+
+    <!-- Modal Verifikasi Pembayaran -->
+    <div id="verify-modal" class="fixed inset-0 bg-black bg-opacity-80 z-[150] hidden flex items-center justify-center p-4">
+        <div class="bg-white p-8 md:p-10 max-w-md w-full border-t-8 border-spoon-blue shadow-2xl relative">
+            <button onclick="closeVerifyModal()" class="absolute top-4 right-4 text-gray-400 hover:text-black transition"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="text-xl font-black jdm-font mb-2 uppercase italic tracking-tighter" id="verify-title">Verifikasi Pembayaran</h3>
+            <p class="text-[10px] text-gray-500 mb-6 uppercase tracking-widest font-bold" id="verify-subtitle">Silahkan lengkapi data untuk memproses order.</p>
+            
+            <div id="verify-fields" class="space-y-4">
+                <!-- Field diinjeksi via JS -->
+            </div>
+
+            <button onclick="processCheckout()" class="w-full bg-spoon-blue text-white py-4 mt-6 font-black uppercase text-sm hover:bg-black transition shadow-lg">
+                Verifikasi & Pesan Sekarang
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal Sukses -->
+    <div id="success-modal" class="fixed inset-0 bg-black bg-opacity-80 z-[200] hidden flex items-center justify-center p-4">
+        <div class="bg-white p-8 md:p-10 max-w-lg w-full text-center border-t-8 border-spoon-blue shadow-2xl">
+            <i class="fa-solid fa-check-circle text-5xl text-green-500 mb-4"></i>
+            <h3 class="text-xl md:text-2xl font-black jdm-font mb-2 uppercase italic tracking-tighter">Pesanan Berhasil</h3>
+            <div id="order-summary-box" class="text-left bg-gray-50 p-4 md:p-6 text-[10px] md:text-xs space-y-3 mb-6 border border-gray-100 font-bold uppercase"></div>
+            <p class="text-[10px] text-gray-400 mb-6 italic">Instruksi pembayaran telah dikirim ke akun Anda.</p>
+            <button onclick="closeModal()" class="w-full bg-spoon-blue text-white py-4 font-black uppercase text-sm hover:bg-black transition">Tutup & Beranda</button>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null; 
+        let cart = [];
+        const shippingFee = 150000;
+
+        const products = [
+            { 
+                id: 1, 
+                name: "Spoon Monoblock Caliper Set", 
+                price: 24500000, 
+                image: "https://image.nengun.com/catalogue/1024x768/nengun-1300-6681-02-spoon-monoblock_caliper_set-a608aee3.jpg", 
+                category: "Brakes",
+                desc: "Kaliper 4-pot monoblok berkinerja tinggi yang dirancang untuk distribusi tekanan kampas rem secara presisi.",
+            },
+            { 
+                id: 2, 
+                name: "SW388 Wheel 18x8.5 Matte Black", 
+                price: 12500000, 
+                image: "https://global.discourse-cdn.com/forza/optimized/4X/2/e/e/2eead6d3b5f82e9419d650f3fa6531bff4d70172_2_999x750.jpeg", 
+                category: "Wheels",
+                desc: "Velg forged legendaris Spoon Sports. Sangat ringan, kuat, dan ikonik.",
+            },
+            { 
+                id: 3, 
+                name: "Spoon Wheel Nut [CrMo] M14x1.5", 
+                price: 3450000, 
+                image: "https://spoonusa.com/media/catalog/product/cache/28f500ab49f700ade88364aabda1495b/s/p/sp-all-90304-c14_00.jpg", 
+                category: "Wheels",
+                desc: "Baut roda berbahan Chrome Molybdenum (CrMo) untuk kekuatan maksimal saat racing.",
+            },
+            { 
+                id: 4, 
+                name: "Carbon Fiber Bonnet - Civic FL5", 
+                price: 18900000, 
+                image: "https://jhpusa.com/cdn/shop/files/Spoon-Carbon-Bonnet-Vent-_FL5_-1.jpg?v=1718836890&width=1100", 
+                category: "Body",
+                desc: "Kap mesin serat karbon asli dengan desain aerodinamis fungsional.",
+            },
+            { 
+                id: 5, 
+                name: "N1 Muffler Kit - Dual Exit", 
+                price: 9800000, 
+                image: "https://spoonusa.com/media/catalog/product/cache/a87677397e462feae9d1f1d5d0e96487/1/8/18000-fl5-0004_1.jpg", 
+                category: "Exhaust",
+                desc: "Sistem knalpot N1 yang memberikan suara dan performa mesin maksimal.",
+            },
+            { 
+                id: 6, 
+                name: "Spoon Valve Cover, Yellow", 
+                price: 7850000, 
+                image: "https://groupngarage.com/cdn/shop/files/sp-12310-fl1-y00_00.jpg?v=1707202328&width=713", 
+                category: "Engine",
+                desc: "Penutup katup berwarna kuning khas Spoon untuk estetika ruang mesin.",
+            },
+            { 
+                id: 7, 
+                name: "Spoon Sports Sticker - Japan", 
+                price: 450000, 
+                image: "https://ih1.redbubble.net/image.1943456420.8849/st,small,507x507-pad,600x600,f8f8f8.jpg", 
+                category: "Accessories",
+                desc: "Stiker vinyl kualitas tinggi, tahan panas dan cuaca ekstrim.",
+            },
+            { 
+                id: 8, 
+                name: "Spoon Steering Wheel - ALL", 
+                price: 4500000, 
+                image: "https://spoonusa.com/media/catalog/product/cache/a87677397e462feae9d1f1d5d0e96487/s/p/sp-all-78500-000_00.jpg", 
+                category: "Accessories",
+                desc: "Manufactured by MOMO Italy, the grip is thicker for a better feel and response. 340mm diameter for maintaining factory steering inputs. SRS bypass is not included. Fits all Momo compatible steering hubs. Leather grip with red stitching. Spoon horn button included.",
+            },
+            { 
+                id: 9, 
+                name: "Spoon Sports Oil Filter", 
+                price: 489500, 
+                image: "https://jhpusa.com/cdn/shop/files/Spoon-Sports-Oil-Filter-1.jpg?v=1693595774&width=1100", 
+                category: "Engine",
+                desc: "SPOON SPORTS newly introduces OIL FILTERS for Honda Cars. Honda cars are best known for its high revving engines.",
+            },
+            { 
+                id: 10, 
+                name: "Spoon Stabilizer [Front] - Fit GK5", 
+                price: 5068500, 
+                image: "https://spoonusa.com/media/catalog/product/cache/a87677397e462feae9d1f1d5d0e96487/s/p/sp-51300-gk5-000_00.jpg", 
+                category: "Accessories",
+                desc: "The Spoon stabilizer bar controls the amount of body roll and roll speed during hard cornering. Employs a higher rate than the factory bar for better traction performance",
+            }
+        ];
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.add('hidden'));
+            const target = document.getElementById(`page-${pageId}`);
+            if(target) target.classList.remove('hidden');
+            window.scrollTo(0,0);
+        }
+
+        function toggleAuthTab(tab) {
+            document.querySelectorAll('.auth-tab').forEach(t => {
+                t.classList.remove('active', 'text-spoon-blue');
+                t.classList.add('text-gray-400');
+            });
+            document.getElementById(`tab-${tab}`).classList.add('active', 'text-spoon-blue');
+            document.getElementById(`tab-${tab}`).classList.remove('text-gray-400');
+
+            if (tab === 'login') {
+                document.getElementById('form-login').classList.remove('hidden');
+                document.getElementById('form-register').classList.add('hidden');
+            } else {
+                document.getElementById('form-login').classList.add('hidden');
+                document.getElementById('form-register').classList.remove('hidden');
+            }
+        }
+
+        function filterByCategory(category) {
+            showPage('catalog');
+            const filterDropdown = document.getElementById('catalog-category-filter');
+            if(filterDropdown) filterDropdown.value = category;
+            renderCatalog(category);
+            document.getElementById('catalog-title').innerText = category === 'All' ? 'Semua Produk' : `Kategori: ${category}`;
+        }
+
+        function renderCatalog(filter = 'All') {
+            const container = document.getElementById('product-list');
+            if(!container) return;
+            const countDisplay = document.getElementById('product-count');
+            const filteredProducts = filter === 'All' ? products : products.filter(p => p.category === filter);
+
+            countDisplay.innerText = `${filteredProducts.length} Items`;
+            container.innerHTML = filteredProducts.map(p => `
+                <div class="product-card bg-white border border-gray-100 overflow-hidden group flex flex-col h-full cursor-pointer shadow-sm" onclick="viewProductDetail(${p.id})">
+                    <div class="relative overflow-hidden aspect-square bg-gray-50 flex items-center justify-center flex-shrink-0">
+                        <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="p-3 md:p-6 flex flex-col flex-grow">
+                        <p class="text-[8px] md:text-[10px] text-spoon-blue font-black uppercase mb-1 tracking-widest">${p.category}</p>
+                        <h3 class="font-black text-[10px] md:text-sm uppercase mb-1 md:mb-2 line-clamp-2 min-h-[30px] md:min-h-[40px] tracking-tight leading-tight italic">${p.name}</h3>
+                        <p class="text-spoon-blue font-black mb-3 md:mb-6 text-[10px] md:text-lg">Rp ${p.price.toLocaleString('id-ID')}</p>
+                        <button onclick="event.stopPropagation(); addToCart(${p.id})" class="w-full bg-spoon-blue text-white py-2.5 md:py-4 text-[9px] md:text-xs font-black uppercase hover:bg-black transition-colors mt-auto">
+                            + Keranjang
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function viewProductDetail(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const detailContainer = document.getElementById('detail-content');
+            detailContainer.innerHTML = `
+                <button onclick="showPage('catalog')" class="mb-6 text-[10px] font-black text-spoon-blue flex items-center gap-2 uppercase tracking-widest italic">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali ke Katalog
+                </button>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16">
+                    <div class="bg-white p-2 md:p-4 shadow-sm border border-gray-100">
+                        <img src="${product.image}" class="w-full h-auto object-cover">
+                    </div>
+                    <div class="space-y-6 md:space-y-8">
+                        <div>
+                            <p class="text-spoon-blue font-black uppercase tracking-widest text-[10px] mb-1">${product.category}</p>
+                            <h1 class="text-2xl md:text-5xl font-black jdm-font italic tracking-tighter">${product.name}</h1>
+                            <p class="text-xl md:text-3xl font-black text-spoon-blue mt-4">Rp ${product.price.toLocaleString('id-ID')}</p>
+                        </div>
+                        <div class="border-t border-b border-gray-100 py-6 md:py-8">
+                            <h3 class="font-black uppercase text-xs mb-3 italic tracking-widest text-gray-400">Deskripsi Engineering</h3>
+                            <p class="text-gray-600 leading-relaxed text-sm font-medium">${product.desc}</p>
+                        </div>
+                        <div class="pt-4">
+                            <button onclick="addToCart(${product.id})" class="w-full bg-spoon-blue text-white px-8 py-4 md:py-6 font-black uppercase text-xs tracking-widest hover:bg-black transition-all flex items-center justify-center gap-4 shadow-xl">
+                                <i class="fa-solid fa-cart-plus"></i> Tambah ke Pesanan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            showPage('detail');
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            cart.push(product);
+            updateCartUI();
+            showToast();
+        }
+
+        function updateCartUI() {
+            document.getElementById('cart-count').innerText = cart.length;
+            const cartList = document.getElementById('cart-items');
+            
+            if (cart.length === 0) {
+                cartList.innerHTML = `<div class="py-12 text-center text-gray-400 uppercase font-black tracking-widest italic text-xs">Belum ada part terpilih</div>`;
+            } else {
+                cartList.innerHTML = cart.map((item, index) => `
+                    <div class="flex items-center gap-4 md:gap-6 border-b border-gray-100 pb-4 md:pb-6 last:border-0 last:pb-0">
+                        <img src="${item.image}" class="w-14 h-14 md:w-20 md:h-20 object-cover border border-gray-100 rounded">
+                        <div class="flex-1">
+                            <h4 class="font-black text-[10px] md:text-xs uppercase italic">${item.name}</h4>
+                            <p class="text-spoon-blue font-black text-[10px] md:text-xs">Rp ${item.price.toLocaleString('id-ID')}</p>
+                        </div>
+                        <button onclick="removeFromCart(${index})" class="text-gray-300 hover:text-red-600 transition p-2"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                `).join('');
+            }
+
+            const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+            const total = subtotal > 0 ? subtotal + shippingFee : 0;
+            document.getElementById('summary-subtotal').innerText = `Rp ${subtotal.toLocaleString('id-ID')}`;
+            document.getElementById('cart-total').innerText = `Rp ${total.toLocaleString('id-ID')}`;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function handleAuthAction(action) {
+            const email = action === 'login' ? document.getElementById('login-email').value : document.getElementById('reg-email').value;
+            if(!email) return;
+            currentUser = { name: email.split('@')[0], email: email };
+            updateAuthUI();
+            showPage('home');
+        }
+
+        function updateAuthUI() {
+            const authSection = document.getElementById('auth-nav-section');
+            if (currentUser) {
+                authSection.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <div class="text-right hidden sm:block">
+                            <p class="text-[8px] text-gray-400 font-bold uppercase tracking-widest">Logged In</p>
+                            <p class="text-[10px] font-black text-spoon-blue uppercase italic">${currentUser.name}</p>
+                        </div>
+                        <button onclick="currentUser=null;updateAuthUI();" class="text-gray-400 hover:text-red-600 transition"><i class="fa-solid fa-power-off text-lg"></i></button>
+                    </div>`;
+            } else {
+                authSection.innerHTML = `<button class="bg-spoon-blue text-white px-5 py-2.5 rounded-sm font-black text-[10px] uppercase hover:bg-black transition-all shadow-md" onclick="showPage('login')">Masuk</button>`;
+            }
+        }
+
+        function startVerification() {
+            if (cart.length === 0) return;
+            if (!currentUser) {
+                showPage('login');
+                return;
+            }
+
+            // Validasi Alamat
+            if (!document.getElementById('cust-address').value || !document.getElementById('cust-phone').value) {
+                alert("Mohon lengkapi Detail Pengiriman terlebih dahulu.");
+                return;
+            }
+
+            const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+            const fieldsContainer = document.getElementById('verify-fields');
+            const title = document.getElementById('verify-title');
+            const subtitle = document.getElementById('verify-subtitle');
+
+            fieldsContainer.innerHTML = '';
+            
+            switch(paymentMethod) {
+                case 'PayPal':
+                    title.innerText = "Verifikasi PayPal";
+                    subtitle.innerText = "Hubungkan akun PayPal Anda";
+                    fieldsContainer.innerHTML = `
+                        <div>
+                            <label class="block text-[8px] font-black uppercase text-gray-400 mb-1 tracking-widest">Email atau No. Telepon PayPal</label>
+                            <input type="text" id="v-data-1" required class="w-full p-3 border border-gray-200 text-sm outline-none focus:border-spoon-blue" placeholder="example@email.com">
+                        </div>
+                    `;
+                    break;
+                case 'Bank Transfer':
+                    title.innerText = "Konfirmasi Transfer";
+                    subtitle.innerText = "Pilih bank tujuan Anda";
+                    fieldsContainer.innerHTML = `
+                        <div>
+                            <label class="block text-[8px] font-black uppercase text-gray-400 mb-1 tracking-widest">Pilih Bank</label>
+                            <select id="v-data-1" class="w-full p-3 border border-gray-200 text-sm outline-none focus:border-spoon-blue">
+                                <option>BCA (SPOON INDO - 8820xxxxx)</option>
+                                <option>Mandiri (SPOON INDO - 123xxxxxx)</option>
+                                <option>BNI (SPOON INDO - 098xxxxxx)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[8px] font-black uppercase text-gray-400 mb-1 tracking-widest">Nama Pemilik Rekening Pengirim</label>
+                            <input type="text" id="v-data-2" required class="w-full p-3 border border-gray-200 text-sm outline-none focus:border-spoon-blue" placeholder="Nama sesuai buku tabungan">
+                        </div>
+                    `;
+                    break;
+                case 'E-Wallet':
+                    title.innerText = "Verifikasi E-Wallet";
+                    subtitle.innerText = "QRIS / OVO / Dana / LinkAja";
+                    fieldsContainer.innerHTML = `
+                        <div>
+                            <label class="block text-[8px] font-black uppercase text-gray-400 mb-1 tracking-widest">Nomor HP Terdaftar</label>
+                            <input type="tel" id="v-data-1" required class="w-full p-3 border border-gray-200 text-sm outline-none focus:border-spoon-blue" placeholder="08xxxxxxxxx">
+                        </div>
+                        <p class="text-[9px] text-gray-400 italic font-medium">* Permintaan pembayaran akan dikirimkan ke aplikasi Anda.</p>
+                    `;
+                    break;
+                case 'COD':
+                    title.innerText = "Konfirmasi COD";
+                    subtitle.innerText = "Bayar saat barang sampai";
+                    fieldsContainer.innerHTML = `
+                        <div class="bg-gray-50 p-4 border border-gray-100 text-[10px] text-gray-600 italic">
+                            Anda memilih metode Bayar di Tempat. Harap siapkan uang tunai sesuai total tagihan saat kurir tiba. 
+                        </div>
+                        <input type="hidden" id="v-data-1" value="COD confirmed">
+                    `;
+                    break;
+            }
+
+            document.getElementById('verify-modal').classList.remove('hidden');
+        }
+
+        function closeVerifyModal() {
+            document.getElementById('verify-modal').classList.add('hidden');
+        }
+
+        function processCheckout() {
+            const vData1 = document.getElementById('v-data-1');
+            if (vData1 && !vData1.value) {
+                alert("Mohon lengkapi data verifikasi.");
+                return;
+            }
+
+            const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+            const total = subtotal + shippingFee;
+            const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+            const custName = document.getElementById('cust-name').value || currentUser.name;
+            const verifInfo = vData1.value;
+
+            document.getElementById('order-summary-box').innerHTML = `
+                <div class="space-y-1">
+                    <p class="text-gray-400 text-[8px]">PENERIMA</p>
+                    <p class="text-spoon-blue font-black italic">${custName}</p>
+                </div>
+                <div class="space-y-1 mt-3">
+                    <p class="text-gray-400 text-[8px]">METODE PEMBAYARAN</p>
+                    <p class="font-black italic">${paymentMethod}</p>
+                    <p class="text-[9px] text-gray-500 lowercase opacity-70 italic">${verifInfo}</p>
+                </div>
+                <div class="space-y-1 mt-3 border-t pt-3 border-dashed border-gray-300">
+                    <p class="text-gray-400 text-[8px]">TOTAL TRANSAKSI</p>
+                    <p class="text-spoon-blue font-black text-lg italic tracking-tighter">Rp ${total.toLocaleString('id-ID')}</p>
+                </div>
+            `;
+            
+            closeVerifyModal();
+            document.getElementById('success-modal').classList.remove('hidden');
+        }
+
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3000);
+        }
+
+        function closeModal() {
+            document.getElementById('success-modal').classList.add('hidden');
+            cart = [];
+            updateCartUI();
+            showPage('home');
+        }
+
+        window.onload = () => {
+            renderCatalog();
+            updateAuthUI();
+        };
+    </script>
+</body>
+</html>
